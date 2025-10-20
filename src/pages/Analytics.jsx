@@ -26,7 +26,7 @@ export default function Analytics() {
     // Fetch dataset from backend
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/products"); // Create this endpoint in FastAPI to return your CSV as JSON
+        const response = await axios.get("https://furniture-recommender-backend-1.onrender.com/products"); // Create this endpoint in FastAPI to return your CSV as JSON
         setProducts(response.data);
       } catch (err) {
         console.error("Failed to fetch products:", err);
