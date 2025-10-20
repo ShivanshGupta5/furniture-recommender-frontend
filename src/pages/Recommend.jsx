@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Box, Typography, useMediaQuery, useTheme, Paper } from "@mui/material";
+// frontend/src/pages/Recommend.jsx
+import { useState } from "react";
+import { Box, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { motion } from "framer-motion";
 import ChatUI from "../components/ChatUI";
 import ProductCard from "../components/ProductCard";
@@ -17,7 +18,7 @@ const RecommendationPage = () => {
     setProducts([]);
 
     try {
-      const response = await fetch("https://furniture-recommender-backend-1.onrender.com/recommend", {
+      const response = await fetch("http://127.0.0.1:8000/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
