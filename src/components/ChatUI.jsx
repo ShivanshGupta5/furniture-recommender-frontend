@@ -92,7 +92,7 @@ export default function ChatUI({ messages, onSend }) {
       <form onSubmit={handleSubmit} style={{ display: "flex", gap: "10px" }}>
         <TextField
           fullWidth
-          placeholder="Type a message..."
+          placeholder="Give a breif description of what you want to shop..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           sx={{
