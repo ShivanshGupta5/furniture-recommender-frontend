@@ -1,65 +1,68 @@
+// src/components/ProductCard.jsx
 import React from "react";
-import { Card, CardContent, CardMedia, Typography, Tooltip } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
 export default function ProductCard({ item }) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      transition={{ duration: 0.4 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.98 }}
+      style={{ borderRadius: "12px" }}
     >
-      <Tooltip
-        title={
-          <Typography variant="body2" sx={{ maxWidth: 250 }}>
-            {item.description || "No description available."}
-          </Typography>
-        }
-        arrow
-        placement="top"
+      <Paper
+        sx={{
+          p: 2,
+          borderRadius: 2,
+          bgcolor: "rgba(30,30,40,0.7)",
+          backdropFilter: "blur(12px)",
+          border: "1px solid #0ff",
+          boxShadow: "0 0 15px rgba(0,255,255,0.5)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
+          transition: "box-shadow 0.3s, border-color 0.3s",
+          "&:hover": {
+            borderColor: "#ff00ff",
+            boxShadow: "0 0 20px #0ff, 0 0 15px #ff00ff, 0 0 25px #0ff inset",
+            animation: "glowPulse 2s infinite",
+          },
+        }}
       >
-        <Card
-          sx={{
-            borderRadius: 3,
-            overflow: "hidden",
-            boxShadow: "0 6px 20px rgba(0,255,255,0.2)",
-            transition: "transform 0.3s, box-shadow 0.3s, border 0.3s",
-            bgcolor: "rgba(20,20,30,0.6)",
-            border: "1px solid rgba(0,255,255,0.2)",
-            cursor: "pointer",
-            "&:hover": {
-              transform: "scale(1.05)",
-              boxShadow: "0 0 20px #0ff, 0 0 40px #0ff33a",
-              border: "1px solid #0ff",
-            },
+        <motion.img
+          src={item.img || "https://via.placeholder.com/200x150"}
+          alt={item.name}
+          style={{
+            width: "100%",
+            borderRadius: "8px",
+            marginBottom: "8px",
+            boxShadow: "0 0 10px rgba(0,255,255,0.4)",
+            transition: "box-shadow 0.3s",
           }}
-        >
-          <CardMedia
-            component="img"
-            height="140"
-            image={item.img}
-            alt={item.name}
-            sx={{
-              filter: "brightness(0.9) contrast(1.1)",
-              transition: "filter 0.3s",
-              "&:hover": { filter: "brightness(1) contrast(1.2)" },
-            }}
-          />
-          <CardContent>
-            <Typography
-              variant="subtitle1"
-              sx={{
-                color: "#0ff",
-                fontWeight: 600,
-                textShadow: "0 0 5px #0ff",
-              }}
-            >
-              {item.name}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Tooltip>
+          whileHover={{ boxShadow: "0 0 20px #0ff, 0 0 15px #ff00ff" }}
+        />
+        <Typography sx={{ color: "#0ff", fontWeight: "bold" }}>{item.name}</Typography>
+        {item.brand && (
+          <Typography sx={{ color: "#ff00ff", fontSize: 14 }}>{item.brand}</Typography>
+        )}
+        {item.price && (
+          <Typography sx={{ color: "#aaa" }}>₹{item.price}</Typography>
+        )}
+
+        {/* Keyframes for glow pulse */}
+        <style>
+          {`
+            @keyframes glowPulse {
+              0% { box-shadow: 0 0 5px #0ff; }
+              50% { box-shadow: 0 0 15px #0ff, 0 0 10px #ff00ff; }
+              100% { box-shadow: 0 0 5px #0ff; }
+            }
+          `}
+        </style>
+      </Paper>
     </motion.div>
   );
 }

@@ -1,28 +1,19 @@
+// src/App.jsx
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { AppBar, Toolbar, Button, Typography } from "@mui/material";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
 import Recommend from "./pages/Recommend";
-import Analytics from "./pages/Analytics";
+import Analytics from "./pages/analytics";
 
 export default function App() {
   return (
     <Router>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Furniture Recommender
-          </Typography>
-          <Button color="inherit" component={Link} to="/">Recommend</Button>
-          <Button color="inherit" component={Link} to="/analytics">Analytics</Button>
-        </Toolbar>
-      </AppBar>
-
-      <div style={{ padding: "20px" }}>
+      <Layout>
         <Routes>
           <Route path="/" element={<Recommend />} />
           <Route path="/analytics" element={<Analytics />} />
         </Routes>
-      </div>
+      </Layout>
     </Router>
   );
 }

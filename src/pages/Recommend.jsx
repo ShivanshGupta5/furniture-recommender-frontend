@@ -1,4 +1,4 @@
-// frontend/src/pages/Recommend.jsx
+// src/pages/Recommend.jsx
 import { useState } from "react";
 import { Box, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { motion } from "framer-motion";
@@ -8,29 +8,36 @@ import ProductCard from "../components/ProductCard";
 const RecommendationPage = () => {
   const [messages, setMessages] = useState([]);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleSend = async (input) => {
     if (!input.trim()) return;
 
+    // Add user message immediately
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
     setProducts([]);
+    setLoading(true);
 
     try {
-      const response = await fetch("https://furniture-recommender-backend-1.onrender.com/recommend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
-      });
+      const response = await fetch(
+        "https://furniture-recommender-backend-2.onrender.com/recommend",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: input }),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to fetch recommendations");
 
       const data = await response.json();
 
+      // Assistant message
       const assistantMsg =
         data.length > 0
-          ? `Found ${data.length} furniture recommendation${data.length > 1 ? "s" : ""} for you!`
+          ? `Found ${data.length} furniture recommendation${data.length > 1 ? "s" : ""}!`
           : "No recommendations found.";
 
       setMessages((prev) => [...prev, { sender: "assistant", text: assistantMsg }]);
@@ -42,6 +49,8 @@ const RecommendationPage = () => {
         { sender: "assistant", text: "Sorry, something went wrong." },
       ]);
       setProducts([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,7 +79,7 @@ const RecommendationPage = () => {
         bgcolor: "#0a0a0a",
       }}
     >
-      {/* Animated Futuristic Background */}
+      {/* Animated Background */}
       <Box
         sx={{
           position: "absolute",
@@ -93,13 +102,13 @@ const RecommendationPage = () => {
           width: "200%",
           height: "200%",
           background:
-            "radial-gradient(circle at 50% 50%, rgba(0,255,255,0.05), transparent 70%)",
+            "radial-gradient(circle at 50% 50%, rgba(255,0,255,0.05), transparent 70%)",
           animation: "pulseBackground 10s ease-in-out infinite alternate",
           zIndex: 0,
         }}
       />
 
-      {/* Chat Section */}
+      {/* Chat Panel */}
       <Paper
         elevation={8}
         sx={{
@@ -132,9 +141,34 @@ const RecommendationPage = () => {
           backdropFilter: "blur(10px)",
           border: "1px solid rgba(0,255,255,0.2)",
           zIndex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        {products.length > 0 ? (
+        {loading ? (
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              mt: 5,
+            }}
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+              style={{
+                width: 40,
+                height: 40,
+                border: "4px solid #0ff",
+                borderTop: "4px solid transparent",
+                borderRadius: "50%",
+              }}
+            />
+          </Box>
+        ) : products.length > 0 ? (
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -143,6 +177,7 @@ const RecommendationPage = () => {
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
               gap: "24px",
+              width: "100%",
             }}
           >
             {products.map((product, idx) => (
@@ -161,32 +196,7 @@ const RecommendationPage = () => {
         )}
       </Paper>
 
-      {/* Contact Us Section */}
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 20,
-          right: 20,
-          p: 2,
-          borderRadius: 2,
-          bgcolor: "rgba(20,20,30,0.8)",
-          color: "#0ff",
-          border: "1px solid #0ff",
-          textAlign: "center",
-          backdropFilter: "blur(5px)",
-          fontFamily: "Orbitron, sans-serif",
-          boxShadow: "0 0 20px #0ff",
-          zIndex: 2,
-        }}
-      >
-        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-          Contact Us
-        </Typography>
-        <Typography variant="body2">Mobile: 9810392210</Typography>
-        <Typography variant="body2">Email: sgupta11_be22@thapar.edu</Typography>
-      </Box>
-
-      {/* Keyframes for animations */}
+      {/* Keyframes */}
       <style>
         {`
           @keyframes moveBackground {

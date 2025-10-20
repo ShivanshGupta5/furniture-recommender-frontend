@@ -1,3 +1,4 @@
+// src/components/ChatUI.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { TextField, Button, Box, Avatar, Typography } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
@@ -13,10 +14,16 @@ export default function ChatUI({ messages, onSend }) {
     }
   }, [messages]);
 
-  const handleSubmit = (e) => {
+  const handleSend = async (text) => {
+    if (!text.trim()) return;
+
+    // Add user message
+    onSend(text);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
-    onSend(input);
+    handleSend(input);
     setInput("");
   };
 
@@ -53,34 +60,28 @@ export default function ChatUI({ messages, onSend }) {
                   <Avatar sx={{ width: 30, height: 30, mr: 1 }}>🤖</Avatar>
                 )}
 
-                {msg.text.includes("recommendation") ? (
-                  <Box
-                    sx={{
-                      p: 1.5,
-                      borderRadius: 2,
-                      maxWidth: "80%",
-                      bgcolor: "#555",
-                      color: "#fff",
-                      boxShadow: "0 2px 5px rgba(0,0,0,0.3)",
-                      borderLeft: "4px solid #1976d2",
-                    }}
-                  >
-                    <Typography variant="body1">{msg.text}</Typography>
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      p: 1.5,
-                      borderRadius: 2,
-                      maxWidth: "80%",
-                      bgcolor: msg.sender === "user" ? "#1976d2" : "#444",
-                      color: "#fff",
-                      boxShadow: "0 2px 5px rgba(0,0,0,0.3)",
-                    }}
-                  >
-                    {msg.text}
-                  </Box>
-                )}
+                <Box
+                  sx={{
+                    p: 1.5,
+                    borderRadius: 2,
+                    maxWidth: "80%",
+                    bgcolor:
+                      msg.sender === "user"
+                        ? "rgba(0,255,255,0.2)"
+                        : msg.text.includes("recommendation")
+                        ? "rgba(0,255,255,0.3)"
+                        : "rgba(50,0,50,0.5)",
+                    color: "#fff",
+                    boxShadow:
+                      msg.sender === "user"
+                        ? "0 0 10px #0ff"
+                        : "0 0 10px #ff00ff",
+                    borderLeft:
+                      msg.text.includes("recommendation") ? "4px solid #0ff" : "none",
+                  }}
+                >
+                  <Typography variant="body1">{msg.text}</Typography>
+                </Box>
               </Box>
             </motion.div>
           ))}
@@ -92,20 +93,40 @@ export default function ChatUI({ messages, onSend }) {
       <form onSubmit={handleSubmit} style={{ display: "flex", gap: "10px" }}>
         <TextField
           fullWidth
-          placeholder="Give a breif description of what you want to shop..."
+          placeholder="Describe the furniture you want..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          sx={{
-            "& .MuiOutlinedInput-root": { bgcolor: "#3b3a4c", color: "#fff", borderRadius: 2 },
-            "& .MuiOutlinedInput-notchedOutline": { borderColor: "#555" },
-            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#1976d2" },
-            "& .MuiInputBase-input": { color: "#fff" },
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              handleSubmit(e);
+            }
           }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              bgcolor: "rgba(0,0,0,0.5)",
+              color: "#0ff",
+              borderRadius: 2,
+              border: "1px solid #0ff",
+            },
+            "& .MuiOutlinedInput-notchedOutline": { borderColor: "#0ff" },
+            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#0ff",
+            },
+            "& .MuiInputBase-input": { color: "#0ff" },
+          }}
+          multiline
+          maxRows={4}
         />
         <Button
           variant="contained"
           type="submit"
-          sx={{ bgcolor: "#1976d2", "&:hover": { bgcolor: "#1565c0" }, borderRadius: 2, textTransform: "none" }}
+          sx={{
+            bgcolor: "#0ff",
+            color: "#000",
+            "&:hover": { bgcolor: "#0ff", boxShadow: "0 0 15px #0ff" },
+            borderRadius: 2,
+            textTransform: "none",
+          }}
         >
           Send
         </Button>
