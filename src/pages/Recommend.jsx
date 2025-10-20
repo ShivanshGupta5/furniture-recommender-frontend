@@ -15,7 +15,6 @@ const RecommendationPage = () => {
   const handleSend = async (input) => {
     if (!input.trim()) return;
 
-    // Add user message immediately
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
     setProducts([]);
     setLoading(true);
@@ -31,10 +30,8 @@ const RecommendationPage = () => {
       );
 
       if (!response.ok) throw new Error("Failed to fetch recommendations");
-
       const data = await response.json();
 
-      // Assistant message
       const assistantMsg =
         data.length > 0
           ? `Found ${data.length} furniture recommendation${data.length > 1 ? "s" : ""}!`
@@ -54,7 +51,6 @@ const RecommendationPage = () => {
     }
   };
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
@@ -68,12 +64,14 @@ const RecommendationPage = () => {
   return (
     <Box
       sx={{
+        width: "94.8vw",
+        minHeight: "100vh",
         display: "flex",
         flexDirection: isMobile ? "column" : "row",
         justifyContent: "center",
+        alignItems: "stretch",
         gap: 3,
-        p: 3,
-        minHeight: "100vh",
+        p: { xs: 2, sm: 3, md: 4 },
         position: "relative",
         overflow: "hidden",
         bgcolor: "#0a0a0a",
@@ -112,9 +110,9 @@ const RecommendationPage = () => {
       <Paper
         elevation={8}
         sx={{
-          flex: isMobile ? "none" : "0 0 35%",
-          width: isMobile ? "100%" : "400px",
-          height: isMobile ? "auto" : "75vh",
+          flex: isMobile ? "none" : "0 0 40%",
+          width: isMobile ? "100%" : "40%",
+          height: isMobile ? "auto" : "80vh",
           display: "flex",
           flexDirection: "column",
           borderRadius: 3,
@@ -131,9 +129,9 @@ const RecommendationPage = () => {
       <Paper
         elevation={8}
         sx={{
-          flex: 1,
-          minWidth: 300,
-          height: isMobile ? "auto" : "75vh",
+          flex: isMobile ? "none" : "1",
+          width: isMobile ? "100%" : "60%",
+          height: isMobile ? "auto" : "80vh",
           overflowY: "auto",
           borderRadius: 3,
           p: 2,

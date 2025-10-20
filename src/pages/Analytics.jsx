@@ -1,6 +1,6 @@
 // src/pages/Analytics.jsx
 import React, { useEffect, useState } from "react";
-import { Container, Typography, Grid, Paper } from "@mui/material";
+import { Box, Typography, Grid, Paper } from "@mui/material";
 import {
   BarChart,
   Bar,
@@ -66,13 +66,21 @@ export default function Analytics() {
     border: "1px solid rgba(0,255,255,0.2)",
     borderRadius: 3,
     p: 2,
-    overflow: "auto",
+    overflow: "hidden",
     textAlign: "center",
     height: "100%",
   };
 
   return (
-    <Container sx={{ mt: 4, mb: 4, maxWidth: "xl" }}>
+    <Box
+      sx={{
+        width: "94.8vw",
+        minHeight: "100vh",
+        px: { xs: 2, sm: 4 },
+        py: 4,
+        overflowX: "hidden",
+      }}
+    >
       <Typography
         variant="h4"
         gutterBottom
@@ -93,9 +101,15 @@ export default function Analytics() {
               Products per Category
             </Typography>
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={categoryData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+              <BarChart data={categoryData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#555" />
-                <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#0ff" }} interval={0} angle={-20} textAnchor="end"/>
+                <XAxis
+                  dataKey="name"
+                  tick={{ fontSize: 12, fill: "#0ff" }}
+                  interval={0}
+                  angle={-20}
+                  textAnchor="end"
+                />
                 <YAxis tick={{ fill: "#0ff" }} />
                 <Tooltip contentStyle={{ backgroundColor: "#1e1e28", borderColor: "#0ff" }} />
                 <Bar dataKey="value" fill="#0ff" />
@@ -115,7 +129,7 @@ export default function Analytics() {
               Price Distribution
             </Typography>
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={priceBins} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+              <BarChart data={priceBins} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#555" />
                 <XAxis dataKey="range" tick={{ fontSize: 12, fill: "#0ff" }} />
                 <YAxis tick={{ fill: "#0ff" }} />
@@ -138,13 +152,7 @@ export default function Analytics() {
             </Typography>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
-                <Pie
-                  data={brandData}
-                  dataKey="value"
-                  nameKey="name"
-                  outerRadius={100}
-                  label
-                >
+                <Pie data={brandData} dataKey="value" nameKey="name" outerRadius={100} label>
                   {brandData.map((entry, index) => (
                     <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -168,13 +176,7 @@ export default function Analytics() {
             </Typography>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
-                <Pie
-                  data={colorData}
-                  dataKey="value"
-                  nameKey="name"
-                  outerRadius={100}
-                  label
-                >
+                <Pie data={colorData} dataKey="value" nameKey="name" outerRadius={100} label>
                   {colorData.map((entry, index) => (
                     <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -186,6 +188,6 @@ export default function Analytics() {
           </Paper>
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 }
