@@ -12,6 +12,7 @@ import {
   Pie,
   Cell,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 import axios from "axios";
 
@@ -22,7 +23,7 @@ export default function Analytics() {
 
   useEffect(() => {
     axios
-      .get("https://furniture-recommender-backend-2.onrender.com/products")
+      .get("https://furniture-recommender-backend-1.onrender.com/products")
       .then((res) => setProducts(res.data))
       .catch((err) => console.error(err));
   }, []);
@@ -91,18 +92,15 @@ export default function Analytics() {
             >
               Products per Category
             </Typography>
-            <BarChart
-              width={350}
-              height={250}
-              data={categoryData}
-              margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#555" />
-              <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#0ff" }} />
-              <YAxis tick={{ fill: "#0ff" }} />
-              <Tooltip contentStyle={{ backgroundColor: "#1e1e28", borderColor: "#0ff" }} />
-              <Bar dataKey="value" fill="#0ff" />
-            </BarChart>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={categoryData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#555" />
+                <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#0ff" }} interval={0} angle={-20} textAnchor="end"/>
+                <YAxis tick={{ fill: "#0ff" }} />
+                <Tooltip contentStyle={{ backgroundColor: "#1e1e28", borderColor: "#0ff" }} />
+                <Bar dataKey="value" fill="#0ff" />
+              </BarChart>
+            </ResponsiveContainer>
           </Paper>
         </Grid>
 
@@ -116,18 +114,15 @@ export default function Analytics() {
             >
               Price Distribution
             </Typography>
-            <BarChart
-              width={350}
-              height={250}
-              data={priceBins}
-              margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#555" />
-              <XAxis dataKey="range" tick={{ fontSize: 12, fill: "#0ff" }} />
-              <YAxis tick={{ fill: "#0ff" }} />
-              <Tooltip contentStyle={{ backgroundColor: "#1e1e28", borderColor: "#0ff" }} />
-              <Bar dataKey="value" fill="#ff00ff" />
-            </BarChart>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={priceBins} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#555" />
+                <XAxis dataKey="range" tick={{ fontSize: 12, fill: "#0ff" }} />
+                <YAxis tick={{ fill: "#0ff" }} />
+                <Tooltip contentStyle={{ backgroundColor: "#1e1e28", borderColor: "#0ff" }} />
+                <Bar dataKey="value" fill="#ff00ff" />
+              </BarChart>
+            </ResponsiveContainer>
           </Paper>
         </Grid>
 
@@ -141,21 +136,23 @@ export default function Analytics() {
             >
               Brand Distribution
             </Typography>
-            <PieChart width={350} height={250}>
-              <Pie
-                data={brandData}
-                dataKey="value"
-                nameKey="name"
-                outerRadius={100}
-                label
-              >
-                {brandData.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Legend wrapperStyle={{ color: "#0ff" }} />
-              <Tooltip contentStyle={{ backgroundColor: "#1e1e28", borderColor: "#0ff" }} />
-            </PieChart>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={brandData}
+                  dataKey="value"
+                  nameKey="name"
+                  outerRadius={100}
+                  label
+                >
+                  {brandData.map((entry, index) => (
+                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Legend wrapperStyle={{ color: "#0ff", fontSize: 12 }} />
+                <Tooltip contentStyle={{ backgroundColor: "#1e1e28", borderColor: "#0ff" }} />
+              </PieChart>
+            </ResponsiveContainer>
           </Paper>
         </Grid>
 
@@ -169,21 +166,23 @@ export default function Analytics() {
             >
               Color Distribution
             </Typography>
-            <PieChart width={350} height={250}>
-              <Pie
-                data={colorData}
-                dataKey="value"
-                nameKey="name"
-                outerRadius={100}
-                label
-              >
-                {colorData.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Legend wrapperStyle={{ color: "#0ff" }} />
-              <Tooltip contentStyle={{ backgroundColor: "#1e1e28", borderColor: "#0ff" }} />
-            </PieChart>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={colorData}
+                  dataKey="value"
+                  nameKey="name"
+                  outerRadius={100}
+                  label
+                >
+                  {colorData.map((entry, index) => (
+                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Legend wrapperStyle={{ color: "#0ff", fontSize: 12 }} />
+                <Tooltip contentStyle={{ backgroundColor: "#1e1e28", borderColor: "#0ff" }} />
+              </PieChart>
+            </ResponsiveContainer>
           </Paper>
         </Grid>
       </Grid>
