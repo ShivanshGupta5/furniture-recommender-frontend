@@ -23,7 +23,7 @@ export default function Analytics() {
 
   useEffect(() => {
     axios
-      .get("https://furniture-recommender-backend-1.onrender.com/products")
+      .get("https://furniture-recommender-backend-2.onrender.com/products")
       .then((res) => setProducts(res.data))
       .catch((err) => console.error(err));
   }, []);
