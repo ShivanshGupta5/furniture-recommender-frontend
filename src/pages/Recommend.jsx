@@ -43,7 +43,7 @@ const RecommendationPage = () => {
       console.error(err);
       setMessages((prev) => [
         ...prev,
-        { sender: "assistant", text: "Sorry, something went wrong." },
+        { sender: "assistant", text: "Sorry, something went wrong. Try again" },
       ]);
       setProducts([]);
     } finally {
